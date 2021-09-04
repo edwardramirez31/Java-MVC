@@ -40,11 +40,11 @@ public class ConnectionDB {
             String port = (String) jsonObject.get("dp_port");
             String username = (String) jsonObject.get("db_user");
             String password = (String) jsonObject.get("db_pssword");
-            String dbURL = "jdbc:mysql://" + host + ":" + port + "/museo";
+            String dbURL = "jdbc:mysql://" + host + ":" + port + "/reto";
 
             conn = DriverManager.getConnection(dbURL, username, password);
-            // if( conn != null )
-            // System.out.println ( "Conectado" );
+            if (conn != null)
+                System.out.println("Conectado");
         } catch (SQLException | FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (IOException | ParseException ex) {
