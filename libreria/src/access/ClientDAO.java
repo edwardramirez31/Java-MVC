@@ -69,9 +69,56 @@ public class ClientDAO {
         return client;
     }
 
+    public void updateClient(ClientModel client) {
+        try {
+            if (conn == null) {
+                conn = ConnectionDB.getConnection();
+            }
+            String sql = "UPDATE cliente SET cli_nombre = ?, cli_apellido = ?, cli_email = ?, cli_celular = ?, cli_clave = ?, cli_fecha = ? where cli_login = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, client.getName());
+            statement.setString(2, client.getLastname());
+            statement.setString(3, client.getEmail());
+            statement.setLong(4, client.getCellphone());
+            statement.setString(5, client.getPassword());
+            statement.setString(6, client.getDate());
+            statement.setString(7, client.getLogin());
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Cliente actualizado en la base de datos");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+        }
+    }
+
+    public void deleteClient(String login) {
+        try {
+            if (conn == null) {
+                conn = ConnectionDB.getConnection();
+            }
+            String sql = "DELETE FROM cliente WHERE cli_login = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, login);
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Cliente eliminado de la base de datos");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         ClientDAO clientDAO = new ClientDAO();
         ClientModel result = clientDAO.getClientByLogin("ninja");
-        System.out.println(result);
+        ClientModel client = new ClientModel("edward", "Edward", "Ramirez", "asdf@gmail.com", 331231232, "testing",
+                "2020-08-09");
+        clientDAO.deleteClient("edward");
+        clientDAO.createClient(client);
+        client.setLastname("Gonzalez");
+        clientDAO.updateClient(client);
+        clientDAO.deleteClient("edward");
+
     }
 }
