@@ -13,6 +13,31 @@ import utils.ConnectionDB;
 public class ClientDAO {
     private Connection conn = null;
 
+    public void createClient(ClientModel client) {
+        try {
+            if (conn == null) {
+                conn = ConnectionDB.getConnection();
+            }
+            String sql = "INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, client.getLogin());
+            statement.setString(2, client.getName());
+            statement.setString(3, client.getLastname());
+            statement.setString(4, client.getEmail());
+            statement.setLong(5, client.getCellphone());
+            statement.setString(6, client.getPassword());
+            statement.setString(7, client.getDate());
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Cliente agregado en la base de datos");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+        }
+
+    }
+
     public ClientModel getClientByLogin(String login) {
         ClientModel client = null;
 
