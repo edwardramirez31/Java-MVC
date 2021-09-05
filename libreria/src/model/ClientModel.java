@@ -6,11 +6,11 @@ public class ClientModel {
     private String name;
     private String lastname;
     private String email;
-    private int cellphone;
+    private long cellphone;
     private String password;
     private String date;
 
-    public ClientModel(String login, String name, String lastname, String email, int cellphone, String password,
+    public ClientModel(String login, String name, String lastname, String email, long cellphone, String password,
             String date) {
         this.login = login;
         this.name = name;
@@ -19,6 +19,12 @@ public class ClientModel {
         this.cellphone = cellphone;
         this.password = password;
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientModel [cellphone=" + cellphone + ", date=" + date + ", email=" + email + ", lastname=" + lastname
+                + ", login=" + login + ", name=" + name + ", password=" + password + "]";
     }
 
     public String getLogin() {
@@ -53,7 +59,7 @@ public class ClientModel {
         this.email = email;
     }
 
-    public int getCellphone() {
+    public long getCellphone() {
         return cellphone;
     }
 

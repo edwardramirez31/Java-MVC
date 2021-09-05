@@ -1,6 +1,8 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "libreria/lib/json-simple-1.1.1.jar"
+        "libreria/lib/json-simple-1.1.1.jar",
+        "libreria/lib/junit-4.13.2.jar",
+        "libreria/lib/hamcrest-all-1.3.jar"
     ]
 }
