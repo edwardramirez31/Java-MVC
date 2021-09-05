@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -114,11 +115,45 @@ public class ClientDAO {
         ClientModel result = clientDAO.getClientByLogin("ninja");
         ClientModel client = new ClientModel("edward", "Edward", "Ramirez", "asdf@gmail.com", 331231232, "testing",
                 "2020-08-09");
-        clientDAO.deleteClient("edward");
         clientDAO.createClient(client);
         client.setLastname("Gonzalez");
         clientDAO.updateClient(client);
         clientDAO.deleteClient("edward");
+        ArrayList<ClientModel> clients = clientDAO.getClients();
+        for (ClientModel item : clients) {
+            System.out.println(item);
+        }
 
+    }
+
+    public ArrayList<ClientModel> getClients() {
+        ArrayList<ClientModel> clients = new ArrayList<ClientModel>();
+
+        try {
+            // 1. Get connection
+            if (conn == null)
+                conn = ConnectionDB.getConnection();
+            // 2. create statement
+            String statement = "SELECT * FROM cliente";
+            // 3. prepare statement
+            PreparedStatement preparedStatement = conn.prepareStatement(statement);
+            // 4. execute query
+            ResultSet result = preparedStatement.executeQuery();
+            // 5. loop the result set
+            while (result.next()) {
+                String login = result.getString(1);
+                String name = result.getString(2);
+                String lastname = result.getString(3);
+                String email = result.getString(4);
+                long cellphone = result.getLong(5);
+                String password = result.getString(6);
+                String date = result.getString(7);
+                ClientModel client = new ClientModel(login, name, lastname, email, cellphone, password, date);
+                clients.add(client);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+        }
+        return clients;
     }
 }
