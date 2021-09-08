@@ -34,7 +34,8 @@ public class ClientDAO {
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode()
+                    + "Algo salio mal, asegurese de agregar los datos en su forma correcta");
         }
 
     }
@@ -93,7 +94,7 @@ public class ClientDAO {
         }
     }
 
-    public void deleteClient(String login) {
+    public void deleteClient(String login) throws Exception {
         try {
             if (conn == null) {
                 conn = ConnectionDB.getConnection();
@@ -103,14 +104,16 @@ public class ClientDAO {
             statement.setString(1, login);
             int result = statement.executeUpdate();
             if (result > 0) {
-                JOptionPane.showMessageDialog(null, "Cliente eliminado de la base de datos");
+                System.out.println("Eliminado");
+            } else {
+                throw new Exception("El usuario no existe");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Código : " + e.getErrorCode() + "\nError :" + e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ClientDAO clientDAO = new ClientDAO();
         ClientModel result = clientDAO.getClientByLogin("ninja");
         ClientModel client = new ClientModel("edward", "Edward", "Ramirez", "asdf@gmail.com", 331231232, "testing",
